@@ -3,5 +3,5 @@
 - Note multiclass data was downloaded.
 
 # About files:
-- Image_analysis_multiclass: Analysis and model with Soft Tissue Calcination.
-- Image_analysis_multiclass_balanced: Analysis and model with improved accuracy.
+- Image_analysis_multiclass.ipynb: Analysis and model with Soft Tissue Calcination.
+- Image_analysis_multiclass_balanced.ipynb: Analysis and model with improved accuracy.
