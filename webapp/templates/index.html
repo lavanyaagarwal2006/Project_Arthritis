@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arthritis X-ray Diagnosis - AI-Powered Classification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 Arthritis X-ray Classification System</h1>
+            <p class="subtitle">AI-Powered Multi-Label Diagnosis from Rheumatology X-rays</p>
+            <div class="accuracy-badge">
+                <span class="accuracy-label">Model Accuracy:</span>
+                <span class="accuracy-value">93.75%</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <h2>Upload X-ray Image</h2>
+                <p class="info-text">Upload a grayscale X-ray rheumatology image for arthritis classification</p>
+
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <p class="upload-text">Drag & drop your X-ray image here</p>
+                    <p class="upload-subtext">or</p>
+                    <label for="fileInput" class="upload-button">Choose File</label>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <p class="upload-hint">Supported formats: PNG, JPG, JPEG, BMP, TIFF</p>
+                </div>
+
+                <div id="imagePreview" class="image-preview hidden">
+                    <h3>Selected Image:</h3>
+                    <img id="previewImage" src="" alt="X-ray preview">
+                    <button id="analyzeButton" class="analyze-button">Analyze X-ray</button>
+                </div>
+            </div>
+
+            <div id="loadingSection" class="loading-section hidden">
+                <div class="spinner"></div>
+                <p>Analyzing X-ray image...</p>
+            </div>
+
+            <div id="resultsSection" class="results-section hidden">
+                <h2>Diagnosis Results</h2>
+
+                <div id="detectedConditions" class="detected-conditions">
+                    <!-- Detected conditions will be inserted here -->
+                </div>
+
+                <div class="all-predictions">
+                    <h3>Complete Probability Analysis</h3>
+                    <div id="allPredictions" class="predictions-grid">
+                        <!-- All predictions will be inserted here -->
+                    </div>
+                </div>
+
+                <button id="analyzeAnotherButton" class="secondary-button">Analyze Another Image</button>
+            </div>
+
+            <div id="errorSection" class="error-section hidden">
+                <div class="error-icon">⚠️</div>
+                <h3>Error</h3>
+                <p id="errorMessage"></p>
+                <button id="tryAgainButton" class="secondary-button">Try Again</button>
+            </div>
+        </main>
+
+        <footer>
+            <div class="disclaimer">
+                <strong>Medical Disclaimer:</strong> This tool is for educational and research purposes only.
+                It should not be used as a substitute for professional medical diagnosis.
+                Always consult with qualified healthcare professionals for medical advice.
+            </div>
+            <div class="info-section">
+                <h3>About This Model</h3>
+                <ul>
+                    <li><strong>Architecture:</strong> 4-layer CNN with 2.75M parameters</li>
+                    <li><strong>Training Data:</strong> X-ray Rheumatology dataset (Roboflow)</li>
+                    <li><strong>Classes:</strong> 11 arthritis-related conditions</li>
+                    <li><strong>Performance:</strong> 93.75% test accuracy, 99% precision</li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImage = document.getElementById('previewImage');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const loadingSection = document.getElementById('loadingSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const errorSection = document.getElementById('errorSection');
+        const errorMessage = document.getElementById('errorMessage');
+        const analyzeAnotherButton = document.getElementById('analyzeAnotherButton');
+        const tryAgainButton = document.getElementById('tryAgainButton');
+
+        let selectedFile = null;
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileSelect(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Handle file selection
+        function handleFileSelect(file) {
+            selectedFile = file;
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                imagePreview.classList.remove('hidden');
+                uploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Analyze button click
+        analyzeButton.addEventListener('click', () => {
+            if (!selectedFile) return;
+
+            // Hide preview and results
+            imagePreview.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+            errorSection.classList.add('hidden');
+
+            // Show loading
+            loadingSection.classList.remove('hidden');
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            // Send to server
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingSection.classList.add('hidden');
+
+                if (data.success) {
+                    displayResults(data.results);
+                } else {
+                    displayError(data.error || 'Unknown error occurred');
+                }
+            })
+            .catch(error => {
+                loadingSection.classList.add('hidden');
+                displayError('Network error: ' + error.message);
+            });
+        });
+
+        // Display results
+        function displayResults(results) {
+            const detectedConditions = document.getElementById('detectedConditions');
+            const allPredictions = document.getElementById('allPredictions');
+
+            // Clear previous results
+            detectedConditions.innerHTML = '';
+            allPredictions.innerHTML = '';
+
+            // Display detected conditions
+            if (results.detected_conditions.length > 0) {
+                detectedConditions.innerHTML = '<h3 class="positive-result">✓ Detected Conditions</h3>';
+                results.detected_conditions.forEach(condition => {
+                    const conditionDiv = document.createElement('div');
+                    conditionDiv.className = 'condition-card detected';
+                    conditionDiv.innerHTML = `
+                        <div class="condition-name">${condition.class}</div>
+                        <div class="condition-probability">
+                            <div class="probability-bar">
+                                <div class="probability-fill" style="width: ${condition.probability * 100}%"></div>
+                            </div>
+                            <span class="probability-text">${(condition.probability * 100).toFixed(1)}%</span>
+                        </div>
+                    `;
+                    detectedConditions.appendChild(conditionDiv);
+                });
+            } else {
+                detectedConditions.innerHTML = '<h3 class="negative-result">✓ No Arthritis Conditions Detected</h3><p class="info-text">All probability scores are below the diagnostic threshold (90%).</p>';
+            }
+
+            // Display all predictions
+            results.all_predictions.forEach(prediction => {
+                const predDiv = document.createElement('div');
+                predDiv.className = `prediction-item ${prediction.detected ? 'detected' : ''}`;
+                predDiv.innerHTML = `
+                    <div class="prediction-header">
+                        <span class="prediction-name">${prediction.class}</span>
+                        <span class="prediction-prob">${(prediction.probability * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="prediction-bar-container">
+                        <div class="prediction-bar" style="width: ${prediction.probability * 100}%"></div>
+                    </div>
+                `;
+                allPredictions.appendChild(predDiv);
+            });
+
+            resultsSection.classList.remove('hidden');
+        }
+
+        // Display error
+        function displayError(message) {
+            errorMessage.textContent = message;
+            errorSection.classList.remove('hidden');
+        }
+
+        // Analyze another image
+        analyzeAnotherButton.addEventListener('click', resetForm);
+        tryAgainButton.addEventListener('click', resetForm);
+
+        function resetForm() {
+            selectedFile = null;
+            fileInput.value = '';
+            imagePreview.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+            errorSection.classList.add('hidden');
+            uploadArea.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* Header Styles */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    opacity: 0.95;
+    margin-bottom: 20px;
+}
+
+.accuracy-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 25px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+}
+
+.accuracy-label {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.accuracy-value {
+    font-weight: 700;
+    font-size: 1.3em;
+    color: #4ade80;
+}
+
+/* Main Content */
+main {
+    padding: 40px;
+}
+
+/* Upload Section */
+.upload-section h2 {
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 1.8em;
+}
+
+.info-text {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.upload-area {
+    border: 3px dashed #667eea;
+    border-radius: 15px;
+    padding: 60px 40px;
+    text-align: center;
+    background: #f8f9ff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    background: #f0f2ff;
+    border-color: #764ba2;
+}
+
+.upload-area.drag-over {
+    background: #e8ebff;
+    border-color: #4ade80;
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.upload-text {
+    font-size: 1.3em;
+    color: #667eea;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.upload-subtext {
+    color: #999;
+    margin: 15px 0;
+}
+
+.upload-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 35px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.upload-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.upload-hint {
+    font-size: 0.9em;
+    color: #999;
+    margin-top: 20px;
+}
+
+/* Image Preview */
+.image-preview {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.image-preview h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+.image-preview img {
+    max-width: 400px;
+    max-height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px;
+}
+
+.analyze-button {
+    background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analyze-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(74, 222, 128, 0.4);
+}
+
+/* Loading Section */
+.loading-section {
+    text-align: center;
+    padding: 60px 40px;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f3f4f6;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-section p {
+    font-size: 1.2em;
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* Results Section */
+.results-section {
+    margin-top: 40px;
+}
+
+.results-section h2 {
+    color: #667eea;
+    font-size: 2em;
+    margin-bottom: 25px;
+}
+
+.detected-conditions {
+    margin-bottom: 40px;
+}
+
+.positive-result {
+    color: #16a34a;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.negative-result {
+    color: #667eea;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.condition-card {
+    background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3);
+}
+
+.condition-name {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.condition-probability {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.probability-bar {
+    flex: 1;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.probability-fill {
+    height: 100%;
+    background: white;
+    border-radius: 12px;
+    transition: width 0.5s ease;
+}
+
+.probability-text {
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.all-predictions {
+    background: #f8f9ff;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.all-predictions h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+.predictions-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.prediction-item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.prediction-item.detected {
+    border-left-color: #4ade80;
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2);
+}
+
+.prediction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.prediction-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.prediction-prob {
+    font-weight: 700;
+    color: #667eea;
+}
+
+.prediction-item.detected .prediction-prob {
+    color: #16a34a;
+}
+
+.prediction-bar-container {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.prediction-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.prediction-item.detected .prediction-bar {
+    background: linear-gradient(90deg, #4ade80 0%, #16a34a 100%);
+}
+
+.secondary-button {
+    background: #f3f4f6;
+    color: #667eea;
+    border: 2px solid #667eea;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-button:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Error Section */
+.error-section {
+    text-align: center;
+    padding: 40px;
+    background: #fef2f2;
+    border-radius: 15px;
+    margin-top: 30px;
+}
+
+.error-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.error-section h3 {
+    color: #dc2626;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.error-section p {
+    color: #991b1b;
+    margin-bottom: 25px;
+}
+
+/* Footer */
+footer {
+    background: #f8f9ff;
+    padding: 40px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.disclaimer {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    color: #856404;
+}
+
+.disclaimer strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.info-section {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.info-section h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.info-section ul {
+    list-style: none;
+}
+
+.info-section li {
+    padding: 8px 0;
+    color: #555;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.info-section li:last-child {
+    border-bottom: none;
+}
+
+.info-section strong {
+    color: #667eea;
+    margin-right: 10px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .subtitle {
+        font-size: 1em;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .upload-area {
+        padding: 40px 20px;
+    }
+
+    .image-preview img {
+        max-width: 100%;
+    }
+
+    footer {
+        padding: 20px;
+    }
+}
